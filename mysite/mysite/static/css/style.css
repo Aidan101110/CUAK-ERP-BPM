@@ -1,0 +1,146 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'calibri';
+}
+
+#container{
+  width: 100%;
+  margin: 0px auto;
+}
+
+.menu {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.menu img {
+  width: 120px;
+  height: 50px;
+  float: left;
+  padding: 8px;
+
+}
+
+header {
+  background: #ef610f;
+  width: 100%;
+  height: 50px;
+  clear: both;
+  content:'';
+  display: table;
+}
+
+
+nav{
+  float: right;
+}
+
+nav ul li {
+  list-style: none;
+  margin-left: 75px;
+  padding: 12px 0;
+  float: left;
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+nav ul li a::before {
+  display: block;
+  content: '';
+  width: 0%;
+  background: rgb(255, 255, 255);
+  height: 5px;
+  top:0;
+  position: absolute;
+  transition: width 0.2s;
+}
+
+nav ul li a:hover::before {
+  width: 100%;
+}
+
+
+
+/*/////////////////////Termina el header y comienza el body////////////////////////*/
+
+h2{
+float: left;
+margin-top: 30px;
+margin-left: 50px;
+margin-bottom: -30px;
+}
+
+#content{
+  float:center;
+  width: 100%;
+  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+#content input{
+  margin:10px;
+
+}
+
+
+#content select{
+margin:30px;
+
+}
+
+#content label{
+margin: 0px -20px 0px 40px;
+
+}
+
+
+
+footer{
+  background-color:#232327;
+  color: white;
+  text-align: center;
+  height: 200px;
+  line-height: 50px;
+}
+
+
+input{
+color:coral;
+}
+
+label{
+  padding-right: 21px;
+
+}
+
+select{
+color:coral;
+}
+
+
+#ingreso{
+color:rgb(0, 225, 56)
+}
+
+#egreso{
+color:rgb(225, 0, 0)
+}
+
+
+h3{
+  margin-inline: 50px;
+  color: #ef610f;
+}
