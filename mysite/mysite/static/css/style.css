@@ -144,3 +144,23 @@ h3{
   margin-inline: 50px;
   color: #ef610f;
 }
+
+
+
+#tables{
+  float:center;
+  width: 100%;
+  padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+#tables table{
+  margin-left: 10px;
+  text-align:center
+
+}
+

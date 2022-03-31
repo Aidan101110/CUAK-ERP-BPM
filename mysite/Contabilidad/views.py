@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import Template, Context
 from .forms import Egreso_Form, Ingreso_Form
+from .models import Ingreso, Egreso
 
 # Create your views here.
 
@@ -11,25 +12,27 @@ from .forms import Egreso_Form, Ingreso_Form
 
 
 def Contabilidad(request):
+    Historial_Ingresos = Ingreso.objects.all()
+    Historial_Egresos = Egreso.objects.all()
     if request.method == 'POST':
-        Ingreso = Ingreso_Form(request.POST, prefix='Ingreso')
-        if Ingreso.is_valid():
-            Ingreso.save()
+        Vista_Ingreso = Ingreso_Form(request.POST, prefix='Ingreso')
+        if Vista_Ingreso.is_valid():
+            Vista_Ingreso.save()
             return redirect(Contabilidad)
     else:
-        Ingreso = Ingreso_Form(prefix='Ingreso')
+        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
 
-    if request.method == 'POST' and not Ingreso.is_valid():
-        Egreso = Egreso_Form(request.POST, prefix='Egreso')
-        Ingreso = Ingreso_Form(prefix='Ingreso')
-        if Egreso.is_valid():
-            Egreso.save()
+    if request.method == 'POST' and not Vista_Ingreso.is_valid():
+        Vista_Egreso = Egreso_Form(request.POST, prefix='Egreso')
+        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
+        if Vista_Egreso.is_valid():
+            Vista_Egreso.save()
             return redirect(Contabilidad)
 
     else:
-        Egreso = Egreso_Form(prefix='Egreso')
+        Vista_Egreso = Egreso_Form(prefix='Egreso')
 
-    context = {'Ingreso' : Ingreso, 'Egreso' : Egreso}
+    context = {'Historial_Ingresos': Historial_Ingresos,'Historial_Egresos': Historial_Egresos, 'Vista_Ingreso' : Vista_Ingreso, 'Vista_Egreso' : Vista_Egreso}
     return render (request, 'inicio.html', context)
 
 

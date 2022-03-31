@@ -24,12 +24,12 @@
 
   
 
-            <h2>Nuevo Ingreso +</h2>
+            <h2>Nuevo Egreso +</h2>
         <div id="content">
             
             <form  method="post">
                 {% csrf_token %}
-                {{Ingreso}}
+                {{Vista_Ingreso}}
               
             <input type="submit" value="Registrar" />
             </form> 
@@ -43,7 +43,7 @@
             
             <form  method="post">
                 {% csrf_token %}
-                {{Egreso}}
+                {{Vista_Egreso}}
               
             <input type="submit" value="Registrar" />
             </form> 
@@ -64,6 +64,61 @@
             <p>000.000</p>
         </div>
      
+        <hr />
+ 
+                <h2>Historial</h2>
+        <div id="tables">
+			<table width="70%" border="2">
+  <tbody>
+    <tr>
+      <th scope="col">&nbsp;Ingresos</th>
+      <th scope="col">Nombre&nbsp;</th>
+      <th scope="col">&nbsp;Valor</th>
+      <th scope="col">Categoría&nbsp;</th>
+      <th scope="col">Bolsillo&nbsp;&nbsp;</th>
+      <th scope="col">&nbsp;Fecha</th>
+    </tr>
+    <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
+    {% for Ingreso in Historial_Ingresos %}
+    <tr>
+      <td>&nbsp;</td>
+      <td>{{ Ingreso.Nombre }}</td>
+      <td>{{ Ingreso.Valor }}</td>
+      <td>{{ Ingreso.Categoría }}</td>
+      <td>{{ Ingreso.Bolsillo_Afectado }}</td>
+      <td>{{ Ingreso.timestamp }}</td>
+    </tr>
+    {% endfor %}
+    <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
+  </tbody>
+</table>
+
+<table width="70%" border="2">
+    <tbody>
+      <tr>
+        <th scope="col">&nbsp;Egresos</th>
+        <th scope="col">Nombre&nbsp;</th>
+        <th scope="col">&nbsp;Valor</th>
+        <th scope="col">Categoría&nbsp;</th>
+        <th scope="col">Bolsillo&nbsp;&nbsp;</th>
+        <th scope="col">&nbsp;Fecha</th>
+      </tr>
+      <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
+      {% for Egreso in Historial_Egresos %}
+      <tr>
+        <td>&nbsp;</td>
+        <td>{{ Egreso.Nombre }}</td>
+        <td>{{ Egreso.Valor }}</td>
+        <td>{{ Egreso.Categoría }}</td>
+        <td>{{ Egreso.Bolsillo_Afectado }}</td>
+        <td>{{ Egreso.timestamp }}</td>
+      </tr>
+      {% endfor %}
+      <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
+    </tbody>
+  </table>
+    
+        </div>
 
 
         <footer>
