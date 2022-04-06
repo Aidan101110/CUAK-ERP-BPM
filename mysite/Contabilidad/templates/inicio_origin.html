@@ -1,0 +1,135 @@
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Contabilidad</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        
+        <div id="container">
+            <header>
+                <div class="menu">
+                    <img src="{% static 'imagenes/1.png' %}" alt="Logo Quack">
+                    <nav>
+                        <ul>
+                          <li><a href="#">Contabilidad</a></li>
+                          <li><a href="#">Nominas</a></li>
+                          <li><a href="#">Recordatorios</a></li>
+                        </ul>
+                    </nav>
+                  </div>
+            </header>
+
+  
+
+            <h2>Nuevo Egreso +</h2>
+        <div id="content">
+            
+            <form  method="post">
+                {% csrf_token %}
+                {{Vista_Ingreso}}
+              
+            <input type="submit" value="Registrar" />
+            </form> 
+        </div>
+        
+        
+        <hr />
+
+        <h2>Nuevo Egreso -</h2>
+        <div id="content">
+            
+            <form  method="post">
+                {% csrf_token %}
+                {{Vista_Egreso}}
+              
+            <input type="submit" value="Registrar" />
+            </form> 
+        </div>
+        
+        
+        <hr />
+ 
+              <h2>Resumen</h2>
+        <div id="content">
+            <h3>Ingresos:</h3>
+            <p>000.000</p>
+
+            <h3>Egresos:</h3>
+            <p>000.000</p>
+
+            <h3>Balance:</h3>
+            <p>000.000</p>
+        </div>
+     
+        <hr />
+ 
+                <h2>Historial</h2>
+        <div id="tables">
+			<table width="70%" border="2">
+  <tbody>
+    <tr>
+      <th scope="col">&nbsp;Ingresos</th>
+      <th scope="col">Nombre&nbsp;</th>
+      <th scope="col">&nbsp;Valor</th>
+      <th scope="col">Categoría&nbsp;</th>
+      <th scope="col">Bolsillo&nbsp;&nbsp;</th>
+      <th scope="col">&nbsp;Fecha</th>
+    </tr>
+    <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
+    {% for Ingreso in Historial_Ingresos %}
+    <tr>
+      <td>&nbsp;</td>
+      <td>{{ Ingreso.Nombre }}</td>
+      <td>{{ Ingreso.Valor }}</td>
+      <td>{{ Ingreso.Categoría }}</td>
+      <td>{{ Ingreso.Bolsillo_Afectado }}</td>
+      <td>{{ Ingreso.timestamp }}</td>
+    </tr>
+    {% endfor %}
+    <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
+  </tbody>
+</table>
+
+<table width="70%" border="2">
+    <tbody>
+      <tr>
+        <th scope="col">&nbsp;Egresos</th>
+        <th scope="col">Nombre&nbsp;</th>
+        <th scope="col">&nbsp;Valor</th>
+        <th scope="col">Categoría&nbsp;</th>
+        <th scope="col">Bolsillo&nbsp;&nbsp;</th>
+        <th scope="col">&nbsp;Fecha</th>
+      </tr>
+      <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
+      {% for Egreso in Historial_Egresos %}
+      <tr>
+        <td>&nbsp;</td>
+        <td>{{ Egreso.Nombre }}</td>
+        <td>{{ Egreso.Valor }}</td>
+        <td>{{ Egreso.Categoría }}</td>
+        <td>{{ Egreso.Bolsillo_Afectado }}</td>
+        <td>{{ Egreso.timestamp }}</td>
+      </tr>
+      {% endfor %}
+      <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
+    </tbody>
+  </table>
+    
+        </div>
+
+
+        <footer>
+            Duban Rubiano :D &copy; 2022
+        </footer>
+
+        </div>
+    </body>
+
+</html>
+
+
+
+

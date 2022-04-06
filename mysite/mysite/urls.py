@@ -19,5 +19,5 @@ from Contabilidad import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Contabilidad', include('Contabilidad.urls')),
+    path('', include('Contabilidad.urls')),
 ]

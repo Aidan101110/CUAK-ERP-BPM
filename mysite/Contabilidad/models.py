@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 # Create your models here.
 
-
+ 
 Categoría_Ingreso =[
     (1, "Prestamo"),
     (2, "Only Fans"),
@@ -36,7 +36,7 @@ class Perfil(models.Model):
 
 
 class Ingreso(models.Model):
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField( auto_now_add=True)
     Valor = models.DecimalField(null=FALSE, blank= FALSE,decimal_places=0, max_digits=10 )
     Categoría = models.IntegerField(null=FALSE, blank= FALSE, choices= Categoría_Ingreso )
     Bolsillo_Afectado = models.IntegerField(null=FALSE, blank= FALSE, choices= Bolsillos)
@@ -51,7 +51,7 @@ class Ingreso(models.Model):
 
 
 class Egreso(models.Model):
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField( auto_now_add=True)
     Valor = models.DecimalField(null=FALSE, blank= FALSE,decimal_places=0, max_digits=10 )
     Categoría = models.IntegerField(null=FALSE, blank= FALSE, choices= Categoría_Egreso )
     Bolsillo_Afectado = models.IntegerField(null=FALSE, blank= FALSE, choices= Bolsillos)

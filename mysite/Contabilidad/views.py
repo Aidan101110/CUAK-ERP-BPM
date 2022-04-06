@@ -1,9 +1,11 @@
+from ast import For
+from curses.ascii import US
 from imp import reload
 from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import Template, Context
-from .forms import Egreso_Form, Ingreso_Form
+from .forms import Egreso_Form, Ingreso_Form, UserRegisterForm 
 from .models import Ingreso, Egreso
 
 # Create your views here.
@@ -34,6 +36,25 @@ def Contabilidad(request):
 
     context = {'Historial_Ingresos': Historial_Ingresos,'Historial_Egresos': Historial_Egresos, 'Vista_Ingreso' : Vista_Ingreso, 'Vista_Egreso' : Vista_Egreso}
     return render (request, 'inicio.html', context)
+
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(Contabilidad)
+    else:
+        form = UserRegisterForm()
+        
+    context = {'form':form}
+    return render(request, 'registro.html', context)
+
+
+
+
+
 
 
 
