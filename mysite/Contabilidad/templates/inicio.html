@@ -338,7 +338,8 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <!--IN THE NEXT LINE WE INDICATE THE PAGE TO GO CALL TO THE LOG OUT BUTTON-->
+                                <a class="dropdown-item" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -377,7 +378,7 @@
                                     
                                     <h4>Nuevo Ingreso </h4>
                                     {% csrf_token %}
-                                    {{Vista_Ingreso}}    
+                                    {{Vista_Ingreso.as_ul}}    
                                                                           
                                 
                                 </div>
@@ -401,7 +402,7 @@
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 <h4> Nuevo Egreso </h4>
                                                 {% csrf_token %}
-                                                {{Vista_Ingreso}}
+                                                {{Vista_Ingreso.as_ul}}
                                                
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><input type="submit" value="-" class="btn btn-primary btn-circle"/></div>
@@ -695,7 +696,8 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <!--IN THE NEXT LINE WE GONNA CALL AND INDICATE TO THE LOG OUT BUTTON THE PAGE TO CALL WITH href="{% url 'logout' %}"> -->
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
         </div>

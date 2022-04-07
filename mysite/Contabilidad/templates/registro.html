@@ -49,10 +49,10 @@
                                     {{ form.first_name }}
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <label>Pseudonimo<label>
+                                        <label>Apodo<label>
                                     {{ form.username }}
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label>Correo Electronico<label>
                                             
                                     {{ form.email }}
@@ -64,7 +64,7 @@
                                         <label>Contraseña<label>
                                     {{ form.password1 }}
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
                                     <label>Repite Contraseña<label>
                                             
                                     {{ form.password2 }}
@@ -76,11 +76,9 @@
                                
                             </form>
                             <hr>
+               
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">¿Olvidaste tu constraseña?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">¿Ya tienes una cuenta? Ingresa!</a>
+                                <a class="small" href="{% url 'login' %}">¿Ya tienes una cuenta? Ingresa!</a>
                             </div>
                         </div>
                     </div>

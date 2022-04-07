@@ -124,9 +124,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#CUANDO INICIAMO SESIÓN DJANGO BUSCA LA URL A LA QUE DEBEMOS SER REDIRECCIONADOS EN CASO DE QUE EL INICIO SEA EXITOSO, AQUÍ SE LO INDICAMOS
+LOGIN_REDIRECT_URL = 'Contabilidad'
+LOGOUT_REDIRECT_URL = 'login'
+
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'mysite/static'),)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

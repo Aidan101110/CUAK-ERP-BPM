@@ -14,12 +14,17 @@ from .models import Ingreso, Egreso
 
 
 def Contabilidad(request):
-    Historial_Ingresos = Ingreso.objects.all()
-    Historial_Egresos = Egreso.objects.all()
+    Historial_Ingresos = Ingreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
+    Historial_Egresos = Egreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO EGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
+
+
     if request.method == 'POST':
         Vista_Ingreso = Ingreso_Form(request.POST, prefix='Ingreso')
         if Vista_Ingreso.is_valid():
-            Vista_Ingreso.save()
+            Asigna_Usuario = Vista_Ingreso.save(commit=False)
+            Asigna_Usuario.Usuario = request.user
+            Asigna_Usuario.save() 
+
             return redirect(Contabilidad)
     else:
         Vista_Ingreso = Ingreso_Form(prefix='Ingreso')

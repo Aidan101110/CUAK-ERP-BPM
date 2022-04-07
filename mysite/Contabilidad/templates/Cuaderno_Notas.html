@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<title>Cuaderno Django</title>
+<body>
+    <h1>Formularios</h1>
+    <h3>Manejo de los estilos graficos de los formularios arrojados por defecto por Django</h3>
+    <p>
+
+    Se pueden arrojar los formularios como listas, parrafos, etc, de esta menra:</br>
+    {{form.as_ul}}</br>
+    {{form.as_p}}</br> 
+   </p>
+   <h3>Widgets | Poner Placeholder</h3>
+   <p>
+    class UserRegisterForm(UserCreationForm):
+    class Meta:
+        #Con esta variable asociamos nuestro formulario a la tabla usuario
+        model = User
+        #el siguiente bloque 'widgets' y su contenido se usa para definir los placeholders de los inputs 
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'Tu nombre'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Tu apodo'}),
+            'email': forms.TextInput(attrs={'placeholder': 'alguien@ejemplo.com'})
+            
+            }
+        fields = ['first_name', 'username', 'email', 'password1', 'password2']</br>
+        Encontrarás más infor aquí:
+        <li>https://stackoverflow.com/questions/4101258/how-do-i-add-a-placeholder-on-a-charfield-in-django</li>
+        <li>https://docs.djangoproject.com/en/dev/ref/forms/widgets/</li>
+   </p>
+   <h1>Cargando URLs</h1>
+   <p><!--IN THE NEXT LINE WE INDICATE THE PAGE TO GO CALL TO THE LOG OUT BUTTON-->
+    <a class="dropdown-item" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal"></p>
+</body>
