@@ -27,7 +27,52 @@
         <li>https://stackoverflow.com/questions/4101258/how-do-i-add-a-placeholder-on-a-charfield-in-django</li>
         <li>https://docs.djangoproject.com/en/dev/ref/forms/widgets/</li>
    </p>
+   <h3>Manejar varios formularios en la misma vista</h3>
+   <p>(Esto me ha traido problemas al intentar filtrar desde los formularios solo los campos que quiero que vienen de los modelos)</br>
+    En la vista:</br>
+    def Contabilidad(request):
+    Historial_Ingresos = Ingreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
+    Historial_Egresos = Egreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO EGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
+
+
+    if request.method == 'POST':
+        Vista_Ingreso = Ingreso_Form(request.POST, prefix='Ingreso')
+        if Vista_Ingreso.is_valid():
+            Asigna_Usuario_Ingreso = Vista_Ingreso.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Ingreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
+            Asigna_Usuario_Ingreso.Usuario = request.user             
+            Asigna_Usuario_Ingreso.save() 
+
+            return redirect(Contabilidad)
+    else:
+        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
+
+    if request.method == 'POST' and not Vista_Ingreso.is_valid():
+        Vista_Egreso = Egreso_Form(request.POST, prefix='Egreso')
+        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
+        if Vista_Egreso.is_valid():
+            Asigna_Usuario_Egreso = Vista_Egreso.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Egreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
+            Asigna_Usuario_Egreso.Usuario = request.user             
+            Asigna_Usuario_Egreso.save() 
+            return redirect(Contabilidad)
+
+    else:
+        Vista_Egreso = Egreso_Form(prefix='Egreso')
+
+    context = {'Historial_Ingresos': Historial_Ingresos,'Historial_Egresos': Historial_Egresos, 'Vista_Ingreso' : Vista_Ingreso, 'Vista_Egreso' : Vista_Egreso}
+    return render (request, 'inicio.html', context)   
+
+
+    </p>
    <h1>Cargando URLs</h1>
    <p><!--IN THE NEXT LINE WE INDICATE THE PAGE TO GO CALL TO THE LOG OUT BUTTON-->
     <a class="dropdown-item" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal"></p>
+
+    <h1>Mostrar el usuario que está en sesion</h1>
+    <p>se puede usar {{request.user}} para llamar al username, o {{request.user.first_name}} para acceder al primer nombre, así sucesivamente con el campo al que se quiera acceder.</p>
+    <h1>Login required</h1>
+    <p>Para hacer que una vista no sea visible a un usuario sin que este se encuente logueado se hace lo siguiente:</br>
+     from django.contrib.auth.decorators import login_required
+    y encima de la clase o función vista se pone: @login_required para todo esto en Settings.py debe estár definido así:</br>
+    LOGIN_URL = 'Nombre de url a la cual se debe dirigir'
+</p>
 </body>

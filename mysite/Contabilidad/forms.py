@@ -1,3 +1,4 @@
+from dataclasses import fields
 import imp
 from django import forms
 from django.forms import ModelForm 
@@ -11,12 +12,15 @@ from django.contrib.auth.models import User #Aquí importamos nuestro modelos de
 class Ingreso_Form (ModelForm):
     class Meta:
         model = Ingreso
-        fields =  ['Valor', 'Categoría', 'Bolsillo_Afectado', 'Nombre']
+        fields = ['Valor', 'Categoría', 'Bolsillo_Afectado', 'Nombre']
+   
 
 class Egreso_Form (ModelForm):
     class Meta:
         model = Egreso
         fields = ['Valor', 'Categoría', 'Bolsillo_Afectado', 'Nombre']
+
+
 
 
 #Clase de registro de usuario

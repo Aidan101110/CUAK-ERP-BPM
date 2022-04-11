@@ -36,12 +36,12 @@ class Perfil(models.Model):
 
 
 class Ingreso(models.Model):
-    timestamp = models.DateTimeField( auto_now_add=True)
+    timestamp = models.DateTimeField( default=timezone.now)
     Valor = models.DecimalField(null=FALSE, blank= FALSE,decimal_places=0, max_digits=10 )
     Categoría = models.IntegerField(null=FALSE, blank= FALSE, choices= Categoría_Ingreso )
     Bolsillo_Afectado = models.IntegerField(null=FALSE, blank= FALSE, choices= Bolsillos)
     Nombre = models.CharField(max_length=30, blank=FALSE, null=FALSE)
-    Usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Ingreso' )
+    Usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='form_ing' )
 
     class Meta:
         ordering = ['-timestamp']
@@ -51,7 +51,7 @@ class Ingreso(models.Model):
 
 
 class Egreso(models.Model):
-    timestamp = models.DateTimeField( auto_now_add=True)
+    timestamp = models.DateTimeField( default=timezone.now)
     Valor = models.DecimalField(null=FALSE, blank= FALSE,decimal_places=0, max_digits=10 )
     Categoría = models.IntegerField(null=FALSE, blank= FALSE, choices= Categoría_Egreso )
     Bolsillo_Afectado = models.IntegerField(null=FALSE, blank= FALSE, choices= Bolsillos)
