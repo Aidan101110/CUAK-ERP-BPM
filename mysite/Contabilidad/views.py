@@ -5,10 +5,26 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import Template, Context
+from django.views import View
 from .forms import Egreso_Form, Ingreso_Form, UserRegisterForm 
 from .models import Ingreso, Egreso
 from django.contrib.auth.decorators import login_required
 
+#Importaciónes para la grafica de ingresos mensuales
+from datetime import datetime
+from django.db.models.functions import Coalesce
+from django.db.models import Sum
+from django.db.models import FloatField
+#esta importación es para crear vistas basadas en clases
+from django.views.generic import TemplateView
+
+#Importaciones para la libreria del generador del pdf xhtml2pdf
+import os
+from mysite import settings
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 def Contabilidad(request):
@@ -59,8 +75,22 @@ def register(request):
 
 
 
+#función para obtener los datos de la grafica de ingresos mensuales
+def get_graph_sales_year_month(self):
+        data = []
+        try:
+            year = datetime.now().year
+            for m in range(1, 13):
+                total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0, output_field=FloatField())).get('r')
+                data.append(float(total))
+        except:
+            pass
+        return data
+
+
 @login_required
 def Ingreso_View(request):
+    Info_Data = get_graph_sales_year_month
     Historial_Ingresos = Ingreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
 
 
@@ -78,7 +108,7 @@ def Ingreso_View(request):
             form_ing = Ingreso_Form()
     
 
-    context = {'Historial_Ingresos': Historial_Ingresos,'form_ing' : form_ing}
+    context = {'Historial_Ingresos': Historial_Ingresos,'form_ing' : form_ing, 'Info_Data':Info_Data}
     return render (request, 'ingresos.html', context) 
 
 
@@ -105,3 +135,25 @@ def Egreso_View(request):
 
     context = {'Historial_Egresos': Historial_Egresos,'form_Eg' : form_Eg}
     return render (request, 'egresos.html', context) 
+
+
+
+
+
+class ImprimirReporte(View):
+    def get (self, request, *args, **kwargs):
+        template = get_template('ingresos.html')
+        context = {'title': 'Mi primer pdf'}
+        html = template.render(context)
+        response = HttpResponse(content_type='application/pdf')
+        #esta opción es para desargar sin vista previa el pdf >>> response['Content-Disposition' ] = 'attachment; filename="report.pdf"'
+        pisaStatus = pisa.CreatePDF (
+            html, dest=response)
+        if pisaStatus.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response  
+
+
+
+
+

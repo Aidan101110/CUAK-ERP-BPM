@@ -1,8 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 
-        {% block content %}     
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% block head%}
+
+  
+
+<head>
+
+    
+
+ 
+<!-- Custom styles for this page -->
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+</head>
+{% endblock head %}
+
+{% block content %}     
+         
 <body id="page-top">
+
+ 
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -240,59 +262,57 @@
                 </div>
                 <!-- /.container-fluid -->
 
-                <div id="table">
-                    <table width="70%" border="2">
-          <tbody>
-            <tr>
-              <th scope="col">&nbsp;Ingresos</th>
-              <th scope="col">Nombre&nbsp;</th>
-              <th scope="col">&nbsp;Valor</th>
-              <th scope="col">Categoría&nbsp;</th>
-              <th scope="col">Bolsillo&nbsp;&nbsp;</th>
-              <th scope="col">&nbsp;Fecha</th>
-            </tr>
-            <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
-            {% for Ingreso in Historial_Ingresos %}
-            <tr>
-              <td>&nbsp;</td>
-              <td>{{ Ingreso.Nombre }}</td>
-              <td>{{ Ingreso.Valor }}</td>
-              <td>{{ Ingreso.Categoría }}</td>
-              <td>{{ Ingreso.Bolsillo_Afectado }}</td>
-              <td>{{ Ingreso.timestamp }}</td>
-            </tr>
-            {% endfor %}
-            <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
-          </tbody>
-        </table>
-        
-        <table width="70%" border="2">
-            <tbody>
-              <tr>
-                <th scope="col">&nbsp;Egresos</th>
-                <th scope="col">Nombre&nbsp;</th>
-                <th scope="col">&nbsp;Valor</th>
-                <th scope="col">Categoría&nbsp;</th>
-                <th scope="col">Bolsillo&nbsp;&nbsp;</th>
-                <th scope="col">&nbsp;Fecha</th>
-              </tr>
-              <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
-              {% for Egreso in Historial_Egresos %}
-              <tr>
-                <td>&nbsp;</td>
-                <td>{{ Egreso.Nombre }}</td>
-                <td>{{ Egreso.Valor }}</td>
-                <td>{{ Egreso.Categoría }}</td>
-                <td>{{ Egreso.Bolsillo_Afectado }}</td>
-                <td>{{ Egreso.timestamp }}</td>
-              </tr>
-              {% endfor %}
-              <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
-            </tbody>
-          </table>
-            
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Historial Egresos</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Valor</th>
+                                        <th>Caregoría</th>
+                                        <th>Bolsillo</th>
+                                        <th>Fecha</th>
+                                        <th>Usuario</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Valor</th>
+                                        <th>Caregoría</th>
+                                        <th>Bolsillo</th>
+                                        <th>Fecha</th>
+                                        <th>Usuario</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                     <!-- Aquí comenzamos el bucle for para mostrar el historial de las transacciones-->
+                                    {% for Egreso in Historial_Egresos %}
+                                    <tr>
+                              
+                                        <td>{{ Egreso.Nombre }}</td>
+                                        <td>{{ Egreso.Valor }}</td>
+                                        <td>{{ Egreso.Categoría }}</td>
+                                        <td>{{ Egreso.Bolsillo_Afectado }}</td>
+                                        <td>{{ Egreso.timestamp }}</td>
+                                        <td>{{ Egreso.Usuario }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <!--Aquí terminamos el bucle for que sirve para mostrar el historial de transacciones-->
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-        
+
+           
+            <!-- /.container-fluid -->
+
 
             </div>
             <!-- End of Main Content -->
@@ -302,8 +322,34 @@
         </div>
         <!-- End of Content Wrapper -->
 
+  
+        
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
+
+
+
+  
+
            
-            {% endblock %}
 </body>
 
+{% endblock content %}
 </html>

@@ -1,0 +1,6 @@
+
+1. Para las vistas utilizo las plantillas de boostrap https://startbootstrap.com/theme/sb-admin-2 
+2. Para la generación de tablas he usado la demo integrada en el sb admin (DataTables)
+3. DataTables trae una opción de generar documentos, pero no la supe instalar, entonces utilizo una libreria llamada weasyprint.org >>> https://weasyprint.org/ tuto: https://www.youtube.com/watch?v=rtXLsf6Vfss&ab_channel=AlgoriSoft la instalación puede llagar a ser un poco tediosa, no olvidar intalar esta libraria y agregarla al path >>>https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases 
+
+
