@@ -2,12 +2,14 @@ from ast import For
 from curses.ascii import US
 from imp import reload
 from multiprocessing import context
+from pyexpat import model
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import Template, Context
 from django.views import View
+from requests import request
 from .forms import Egreso_Form, Ingreso_Form, UserRegisterForm 
-from .models import Ingreso, Egreso
+from .models import Ingreso, Egreso, Bolsillo
 from django.contrib.auth.decorators import login_required
 
 #Importaciónes para la grafica de ingresos mensuales
@@ -27,36 +29,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 
-def Contabilidad(request):
-    Historial_Ingresos = Ingreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
-    Historial_Egresos = Egreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO EGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
 
-
-    if request.method == 'POST':
-        Vista_Ingreso = Ingreso_Form(request.POST, prefix='Ingreso')
-        if Vista_Ingreso.is_valid():
-            Asigna_Usuario_Ingreso = Vista_Ingreso.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Ingreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
-            Asigna_Usuario_Ingreso.Usuario = request.user             
-            Asigna_Usuario_Ingreso.save() 
-
-            return redirect(Contabilidad)
-    else:
-        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
-
-    if request.method == 'POST' and not Vista_Ingreso.is_valid():
-        Vista_Egreso = Egreso_Form(request.POST, prefix='Egreso')
-        Vista_Ingreso = Ingreso_Form(prefix='Ingreso')
-        if Vista_Egreso.is_valid():
-            Asigna_Usuario_Egreso = Vista_Egreso.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Egreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
-            Asigna_Usuario_Egreso.Usuario = request.user             
-            Asigna_Usuario_Egreso.save() 
-            return redirect(Contabilidad)
-
-    else:
-        Vista_Egreso = Egreso_Form(prefix='Egreso')
-
-    context = {'Historial_Ingresos': Historial_Ingresos,'Historial_Egresos': Historial_Egresos, 'Vista_Ingreso' : Vista_Ingreso, 'Vista_Egreso' : Vista_Egreso}
-    return render (request, 'inicio.html', context)   
 
 
 
@@ -65,7 +38,7 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(Contabilidad)
+            return redirect('Ingresos')
     else:
         form = UserRegisterForm()
         
@@ -75,45 +48,152 @@ def register(request):
 
 
 
-#función para obtener los datos de la grafica de ingresos mensuales
-def get_graph_sales_year_month(self):
-        data = []
-        try:
-            year = datetime.now().year
-            for m in range(1, 13):
-                total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0, output_field=FloatField())).get('r')
-                data.append(float(total))
-        except:
-            pass
-        return data
 
 
-@login_required
-def Ingreso_View(request):
-    Info_Data = get_graph_sales_year_month
-    Historial_Ingresos = Ingreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
+
+class Ingreso_View(TemplateView):
+    template_name = 'ingresos.html'
+    model = Ingreso
+    form_var = Ingreso_Form
 
 
-    form_ing = Ingreso_Form()
+    #función para obtener los datos de la grafica de ingresos mensuales
+    def get_graph_sales_year_month(self):
+            data = []
+            try:
+                year = datetime.now().year
+                for m in range(1, 13):
+                    #total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0)).get('r')
+                    total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+                    data.append(float(total))
+            except:
+                pass
+            return data
 
-    if request.method == 'POST':
-        form_ing = Ingreso_Form(request.POST)
+    def get_graph_egresos_year_month(self):
+            data = []
+            try:
+                year = datetime.now().year
+                for m in range(1, 13):
+                    #total = Egreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0)).get('r')
+                    total = Egreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+                    data.append(float(total))
+            except:
+                pass
+            return data
+
+
+    def get_bolsillos (self):
+        bolsi = []
+    
+       # result = Ingreso.objects.values(Ingreso.Bolsillo_Afectado.Nombre)
+        #result = Ingreso.objects.order_by(Ingreso.Bolsillo_Afectado.Nombre)
+       
+        #result = Ingreso.objects.aggregate(total_price=Sum('Valor'))
+        result = Egreso.objects.aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+        bolsi.append(result)
+
+        return bolsi
+  
+    def post (self, request, *args, **kwargs):
+        form_ing = self.form_var(request.POST)
+        
         if form_ing.is_valid():
+            
             Asigna_Usuario_Ingreso = form_ing.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Ingreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
             Asigna_Usuario_Ingreso.Usuario = request.user             
             Asigna_Usuario_Ingreso.save()
-            return redirect(Ingreso_View)
+            return redirect('Ingresos')#aquí ponemos el nombre de la url a la que llamará
 
         else:
             form_ing = Ingreso_Form()
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Historial_Ingresos'] = Ingreso.objects.all()
+        context['Bolsillos'] = Bolsillo.objects.all()
+        context['form_ing'] = self.form_var
+        context['graph_sales_year_month'] = self.get_graph_sales_year_month()
+        context['graph_egresos_year_month'] = self.get_graph_egresos_year_month()
+        context['bolsi'] = self.get_bolsillos()
+
+        return context
+
+
+
+
+class Egreso_View(TemplateView):
+    template_name = 'egresos.html'
+    model = Egreso
+    form_var = Egreso_Form
+
+
+    #función para obtener los datos de la grafica de ingresos mensuales
+    def get_graph_sales_year_month(self):
+            data = []
+            try:
+                year = datetime.now().year
+                for m in range(1, 13):
+                    #total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0)).get('r')
+                    total = Ingreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+                    data.append(float(total))
+            except:
+                pass
+            return data
+
+    def get_graph_egresos_year_month(self):
+            data = []
+            try:
+                year = datetime.now().year
+                for m in range(1, 13):
+                    #total = Egreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('total'), 0)).get('r')
+                    total = Egreso.objects.filter(timestamp__year=year, timestamp__month=m).aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+                    data.append(float(total))
+            except:
+                pass
+            return data
+
+
+    def get_bolsillos (self):
+        bolsi = []
     
+       # result = Ingreso.objects.values(Ingreso.Bolsillo_Afectado.Nombre)
+        #result = Ingreso.objects.order_by(Ingreso.Bolsillo_Afectado.Nombre)
+       
+        #result = Ingreso.objects.aggregate(total_price=Sum('Valor'))
+        result = Egreso.objects.aggregate(r=Coalesce(Sum('Valor'), 0, output_field=FloatField())).get('r')
+        bolsi.append(result)
 
-    context = {'Historial_Ingresos': Historial_Ingresos,'form_ing' : form_ing, 'Info_Data':Info_Data}
-    return render (request, 'ingresos.html', context) 
+        return bolsi
+  
+    def post (self, request, *args, **kwargs):
+        form_Eg = self.form_var(request.POST)
+        
+        if form_Eg.is_valid():
+            
+            Asigna_Usuario_Egreso = form_Eg.save(commit=False) #TODAS LAS VARIABLES Asigna_Usuario_Ingreso SON PARA AGREGAR AUTOMATICAMENTE AL MODELO "Usuario" EL USUARIO QUE ESTA EN SESION
+            Asigna_Usuario_Egreso.Usuario = request.user             
+            Asigna_Usuario_Egreso.save()
+            return redirect('Egresos')#aquí ponemos el nombre de la url a la que llamará
+
+        else:
+            form_ing = Egreso_Form()
 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Historial_Egresos'] = Egreso.objects.all()
+        context['Bolsillos'] = Bolsillo.objects.all()
+        context['form_Eg'] = self.form_var
+        context['graph_sales_year_month'] = self.get_graph_sales_year_month()
+        context['graph_egresos_year_month'] = self.get_graph_egresos_year_month()
+        context['bolsi'] = self.get_bolsillos()
+
+        return context
 
 
+'''
 @login_required
 def Egreso_View(request):
     Historial_Egresos = Egreso.objects.all() #CON ESTA LINEA LLAMAMO LOS DATOS DEL MODELO INGRESO PARA MOSTRARLOS DESPUES A TRAVES DEL CONTEXTO
@@ -136,7 +216,7 @@ def Egreso_View(request):
     context = {'Historial_Egresos': Historial_Egresos,'form_Eg' : form_Eg}
     return render (request, 'egresos.html', context) 
 
-
+'''
 
 
 
@@ -152,8 +232,6 @@ class ImprimirReporte(View):
         if pisaStatus.err:
             return HttpResponse('We had some errors <pre>' + html + '</pre>')
         return response  
-
-
 
 
 

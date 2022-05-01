@@ -6,7 +6,7 @@
 <html lang="en">
 
 {% block head%}
-
+ 
   
 
 <head>
@@ -40,7 +40,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Registro de transacción:&nbsp;</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Panel de control Ingresos&nbsp;</h1>
 				
                     </div>
 					
@@ -68,7 +68,7 @@
                                 
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"><input type="submit" value="+" class="btn btn-success btn-circle" /></div>
-                                </form> 
+                                </form>
                             </div>
                            
                         </div>
@@ -78,7 +78,7 @@
 
 
             
-                        <h3 class="puto">Balance de Enero 2022:        $000.000&nbsp;</h3>
+            
                         
                    
                
@@ -102,7 +102,7 @@
                                             type: 'column'
                                         },
                                         title: {
-                                            text: 'Ingresos año 2022'
+                                            text: 'Balance mes a mes del presente año'
                                         },
                                         subtitle: {
                                             text: 'Columnas'
@@ -146,105 +146,69 @@
                                         },
                                         series: [{
                                             name: 'Ingresos',
-                                            data: {{ graph_sales_year_month|safe }}
-                                            
-                                            
-                            
-                                        }]
+                                            data: {{ graph_sales_year_month|safe }}                                                                    
+                                        },
+                                        {
+                                            name: 'Egresos',
+                                            data: {{ graph_egresos_year_month|safe }}                                                                    
+                                        },
+                                    
+                                    
+                                    ]
                                     
                                     });
                                 </script>
                             </div>
                       
                         
-                          
+                            <div class="col-lg-6 mb-4">
+
+                                <!-- Illustrations -->
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Bolsillos</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <!-- Content Row -->
+                                            <div class="row">               
+                                        
+                                        
+                                                {% for Bolsillo in Bolsillos %}
+                                                <!-- Earnings (Monthly) Card Example -->
+                                                <div class="col-xl-3 col-md-6 mb-4">
+                                                    <div class="card border-left-primary shadow h-100 py-2">
+                                                        <div class="card-body">
+                                                            <div class="row no-gutters align-items-center">
+                                                                <div class="col mr-2">
+                                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                                        {{ Bolsillo.Nombre }}
+                                                        
+                                                                    </div>
+                                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ bolsi }}</div>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                       
+                                </div> 
+                               
+    
+                            </div>      
+                                    
                   
-
-                    <h3 class="puto">Bolsillos&nbsp;</h3>
-                    <!-- Content Row -->
-                    <div class="bolsillos">
-                        
-
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Davivienda
-                            
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">000.000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
-
-                     <!-- Earnings (Monthly) Card Example -->
-                     <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Bancolombia Corriente
-                            
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">000.000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                     <!-- Earnings (Monthly) Card Example -->
-                     <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Paypal
-                            
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">000.000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Nequi
-                            
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">000.000</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
+                    
+                   
+                    
+                  
 
                 
 
@@ -265,7 +229,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Valor</th>
-                                        <th>Caregoría</th>
+                                        <th>Categoría</th>
                                         <th>Bolsillo</th>
                                         <th>Fecha</th>
                                         <th>Usuario</th>
@@ -275,7 +239,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Valor</th>
-                                        <th>Caregoría</th>
+                                        <th>Categoría</th>
                                         <th>Bolsillo</th>
                                         <th>Fecha</th>
                                         <th>Usuario</th>
@@ -308,14 +272,22 @@
 
             </div>
             <!-- End of Main Content -->
+             
 
           
-
+        
         </div>
         <!-- End of Content Wrapper -->
-
-  
-        
+               
+             <!-- Footer -->
+             <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; QUACK SYSTEMS 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

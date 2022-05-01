@@ -69,9 +69,13 @@
                                             
                                     {{ form.password2 }}
                                     </div>
+                                    {% if form.errors %}
+                                    <p>Porfavor utilize una contraseña con al menos un numero, una palabra y de minimo 6 caracteres</p>
+                                    {% endif %}
                                 </div>
                                
                                 <input type="submit" value="Registra"  class="btn btn-primary btn-user btn-block">
+
                                 <hr>
                                
                             </form>
