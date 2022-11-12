@@ -1,5 +1,5 @@
 # Sistema de contabilidad Quack
-This is a program that solve so many problems for the personal, medium and big bussines
+This is a program that solve so many problems for the personal and medium bussines.
 
 # Facturación (A FUTURO)
 Permite facturar con las formalidades exigidas por la DIAN y de manera automatica, generando facturas personalizadas con su logo, envielas a traves de whatsapp o al correo electronico de sus clientes. (a futuro podrá enviar adjunto una encuesta personalizada de satisfacción a sus clientes. Clasificar a sus clientes por categorias de interes de sus productos en una base de datos con la posibilidad de enviarles promociones y ofertas a la medida.
